@@ -154,7 +154,7 @@ class sh2png
     Extended to add image.writeAsync, image.getBase64Async.
   ###
   @format: (str, opts={}) ->
-    opts.font ?= "#{__dirname}/../font/Ubuntu_Mono_10pt.fnt"
+    opts.font ?= "#{__dirname}/../font/Ubuntu_Mono_16pt.fnt"
     opts.width ?= Math.max str.split("\n").map((l) -> l.length)...
     # Default colors from https://github.com/Mayccoll/Gogh/blob/master/themes/one.dark.sh
     opts.colors ?= {normal: {}, bold: {}}
