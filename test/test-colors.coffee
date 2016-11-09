@@ -22,11 +22,14 @@ describe "Simple Strings with Normal Colors", ->
 
       cap = "#{color[0].toUpperCase()}#{color.slice 1}"
       display = "\x1b[#{code}m#{cap}\x1b[0m"
-      input = "\\x1b[#{code}m#{cap}\\x1b[0m"
+      input = "\x1b[#{code}m#{cap}\x1b[0m"
       describe "#{display} String", ->
 
-        formatted = sh2png.format input,
-          width: color.length
+        formatted = null
+
+        it "formats the string", ->
+          formatted = sh2png.format input,
+            width: color.length
 
         it "is writable", ->
           formatted.then (img) ->

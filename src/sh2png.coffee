@@ -48,7 +48,7 @@ class sh2png
   @private
   ###
   @splitString = (str, opts) ->
-    colorCode = /\\(e|033|x1b)\[([0-9]+);?([0-9]+)?m/
+    colorCode = /(?:(?:\\(?:e|033|x1b))|\x1b)\[([0-9]+);?([0-9]+)?m/
     color = @parseColor null, '39', null, opts
     line = 0
     char = 0
