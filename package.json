@@ -4,7 +4,7 @@
   "description": "Get a PNG image of console output.",
   "main": "dist/sh2png.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --compilers coffee:coffee-script/register"
   },
   "repository": {
     "type": "git",
@@ -17,7 +17,14 @@
   },
   "homepage": "https://github.com/CodeLenny/sh2png#readme",
   "devDependencies": {
+    "chai": "^3.5.0",
     "child-process-promise": "^2.2.0",
-    "coffee-script": "^1.11.1"
+    "coffee-script": "^1.11.1",
+    "mocha": "^3.1.2"
+  },
+  "dependencies": {
+    "@codelenny/jimp": "^1.0.0",
+    "@codelenny/load-bmfont": "^1.0.0",
+    "bluebird": "^3.4.6"
   }
 }
