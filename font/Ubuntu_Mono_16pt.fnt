@@ -1226,4 +1226,5 @@
     <char id="65533" x="257" y="277" width="8" height="8" xoffset="0" yoffset="6" xadvance="13" page="0" chnl="15"/>
     <char id="32" x="0" y="0" width="0" height="0" xoffset="0" yoffset="6" xadvance="13" page="0" chnl="15"/>
   </chars>
+  <kernings count="0"></kernings>
 </font>
