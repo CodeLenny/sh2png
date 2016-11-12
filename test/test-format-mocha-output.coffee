@@ -18,8 +18,8 @@ describe "Formatting Mocha Output", ->
       .then ({stdout}) ->
         sh2png.format stdout.replace(/[0-9]+ms/, "7ms"),
           fonts: [
-            "#{__dirname}/../font/Ubuntu_Mono_16pt.fnt",
-            "#{__dirname}/mocha-test/DejaVu_Sans_Mono_Symbols_16pt.fnt"]
+            "#{__dirname}/../font/Ubuntu_Mono_24pt.fnt",
+            "#{__dirname}/mocha-test/DejaVu_Sans_Mono_Symbols_24pt.fnt"]
       .then (img) ->
         img.writeAsync "#{__dirname}/output/format-mocha.png"
 
