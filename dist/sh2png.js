@@ -9,13 +9,56 @@
   sh2png = (function() {
 
     /*
+    @property {Object} the default color scheme for coloring messages.
+     */
+    function sh2png() {}
+
+    sh2png.colorScheme = {
+      normal: {
+        "default": 0x5C6370FF,
+        black: 0x000000FF,
+        red: 0xE06C75FF,
+        green: 0x98C379FF,
+        yellow: 0xD19A66FF,
+        blue: 0x61AFEFFF,
+        magenta: 0xC678DDFF,
+        cyan: 0x56B6C2FF,
+        white: 0xABB2BFFF
+      },
+      bold: {
+        "default": 0x5C6370FF,
+        black: 0x5C6370FF,
+        red: 0xE06C75FF,
+        green: 0x98C379FF,
+        yellow: 0xD19A66FF,
+        blue: 0x61AFEFFF,
+        magenta: 0xC678DDFF,
+        cyan: 0x56B6C2FF,
+        white: 0xFFFEFEFF
+      },
+      background: 0x1E2127FF
+    };
+
+    sh2png.colorCodes = {
+      "39": "default",
+      "30": "black",
+      "31": "red",
+      "32": "green",
+      "33": "yellow",
+      "34": "blue",
+      "35": "magenta",
+      "36": "cyan",
+      "37": "white"
+    };
+
+
+    /*
     Returns the required height and width of the image.
     @param {String} str the console output that will be formatted
     @param {Object} opts the user-supplied options.  See {sh2png.format}
     @return {Promise<Array<Number>>} the needed [height, width] of the image, in pixels.
     @private
      */
-    function sh2png() {}
 
     sh2png.getImageDimensions = function(str, opts) {
       var f, load;
@@ -165,21 +208,10 @@
      */
 
     sh2png.parseColor = function(color, code1, code2, opts) {
-      var code, color_only, j, len, ref, ref1, ref2, ref3;
+      var code, j, len, ref, ref1, ref2, ref3;
       if (color == null) {
         color = {};
       }
-      color_only = {
-        "39": "default",
-        "30": "black",
-        "31": "red",
-        "32": "green",
-        "33": "yellow",
-        "34": "blue",
-        "35": "magenta",
-        "36": "cyan",
-        "37": "white"
-      };
       ref = [code1, code2];
       for (j = 0, len = ref.length; j < len; j++) {
         code = ref[j];
@@ -203,9 +235,9 @@
                 bold: false
               };
               break;
-            case !color_only[code]:
+            case !this.colorCodes[code]:
               color = {
-                color: color_only[code],
+                color: this.colorCodes[code],
                 bold: (ref3 = color.bold) != null ? ref3 : false
               };
           }
@@ -242,6 +274,10 @@
     @option opts {Number} width the console width to wrap characters at.  Defaults to the longest line in the string.
     @option opts {String, Array<String>} font a path (or array of paths) to a BMF font to use when drawing the image.
       Defaults to Ubuntu Mono 10pt, included in `sh2png`.
+    @option opts {Object} colors a color scheme to apply when formatting messages.  Colors must be native JavaScript rgba
+      hex values including transparency, such as `0x0x5C6370FF`.  Structure: `{normal: {}, bold: {}, background}`, with
+      colors `default`, `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan`, `white` under `normal` and `bold`.
+      Defaults to using a theme based on [Atom One Dark](https://github.com/Mayccoll/Gogh/blob/master/themes/one.dark.sh).
     @return {Promise<Image>} a [JIMP](https://github.com/oliver-moran/jimp) image, which supports
       [`image.write(path, cb)`](https://github.com/oliver-moran/jimp#writing-to-files),
       [`image.getBase64(mime, cb)`](https://github.com/oliver-moran/jimp#data-uri), etc.
@@ -249,7 +285,7 @@
      */
 
     sh2png.format = function(str, opts) {
-      var base, base1, base10, base11, base12, base13, base14, base15, base16, base17, base18, base2, base3, base4, base5, base6, base7, base8, base9, fonts, image;
+      var base, base1, base2, color, fonts, image, j, len, ref;
       if (opts == null) {
         opts = {};
       }
@@ -262,67 +298,20 @@
         }));
       }
       if (opts.colors == null) {
-        opts.colors = {
-          normal: {},
-          bold: {}
-        };
+        opts.colors = this.colorScheme;
       }
-      if ((base = opts.colors.normal)["default"] == null) {
-        base["default"] = 0x5C6370FF;
+      ref = ["default", "black", "red", "green", "yellow", "blue", "magenta", "cyan", "white"];
+      for (j = 0, len = ref.length; j < len; j++) {
+        color = ref[j];
+        if ((base = opts.colors.normal)[color] == null) {
+          base[color] = this.colorScheme.normal[color];
+        }
+        if ((base1 = opts.colors.bold)[color] == null) {
+          base1[color] = this.colorScheme.bold[color];
+        }
       }
-      if ((base1 = opts.colors.normal).black == null) {
-        base1.black = 0x000000FF;
-      }
-      if ((base2 = opts.colors.normal).red == null) {
-        base2.red = 0xE06C75FF;
-      }
-      if ((base3 = opts.colors.normal).green == null) {
-        base3.green = 0x98C379FF;
-      }
-      if ((base4 = opts.colors.normal).yellow == null) {
-        base4.yellow = 0xD19A66FF;
-      }
-      if ((base5 = opts.colors.normal).blue == null) {
-        base5.blue = 0x61AFEFFF;
-      }
-      if ((base6 = opts.colors.normal).magenta == null) {
-        base6.magenta = 0xC678DDFF;
-      }
-      if ((base7 = opts.colors.normal).cyan == null) {
-        base7.cyan = 0x56B6C2FF;
-      }
-      if ((base8 = opts.colors.normal).white == null) {
-        base8.white = 0xABB2BFFF;
-      }
-      if ((base9 = opts.colors.bold)["default"] == null) {
-        base9["default"] = 0x5C6370FF;
-      }
-      if ((base10 = opts.colors.bold).black == null) {
-        base10.black = 0x5C6370FF;
-      }
-      if ((base11 = opts.colors.bold).red == null) {
-        base11.red = 0xE06C75FF;
-      }
-      if ((base12 = opts.colors.bold).green == null) {
-        base12.green = 0x98C379FF;
-      }
-      if ((base13 = opts.colors.bold).yellow == null) {
-        base13.yellow = 0xD19A66FF;
-      }
-      if ((base14 = opts.colors.bold).blue == null) {
-        base14.blue = 0x61AFEFFF;
-      }
-      if ((base15 = opts.colors.bold).magenta == null) {
-        base15.magenta = 0xC678DDFF;
-      }
-      if ((base16 = opts.colors.bold).cyan == null) {
-        base16.cyan = 0x56B6C2FF;
-      }
-      if ((base17 = opts.colors.bold).white == null) {
-        base17.white = 0xFFFEFEFF;
-      }
-      if ((base18 = opts.colors).background == null) {
-        base18.background = 0x1E2127FF;
+      if ((base2 = opts.colors).background == null) {
+        base2.background = this.colorScheme.background;
       }
       fonts = null;
       image = null;
@@ -334,13 +323,13 @@
         fonts = Jimp.loadFont(opts.fonts);
       }
       return Promise.join(fonts, this.createCanvas(str, opts), this.splitString(str, opts)).then(function(arg) {
-        var all, f, fn, font, i, j, len, split;
+        var all, f, fn, font, i, k, len1, split;
         f = arg[0], i = arg[1], split = arg[2];
         font = f;
         image = i;
         all = [];
-        for (j = 0, len = split.length; j < len; j++) {
-          fn = split[j];
+        for (k = 0, len1 = split.length; k < len1; k++) {
+          fn = split[k];
           all.push(fn(font, image, opts));
         }
         return Promise.all(all);

@@ -28,6 +28,17 @@ class sh2png
       cyan: 0x56B6C2FF
       white: 0xFFFEFEFF
     background: 0x1E2127FF
+  
+  @colorCodes =
+    "39": "default"
+    "30": "black"
+    "31": "red"
+    "32": "green"
+    "33": "yellow"
+    "34": "blue"
+    "35": "magenta"
+    "36": "cyan"
+    "37": "white"
 
   ###
   Returns the required height and width of the image.
@@ -142,16 +153,6 @@ class sh2png
   @private
   ###
   @parseColor = (color={}, code1, code2, opts) ->
-    color_only =
-      "39": "default"
-      "30": "black"
-      "31": "red"
-      "32": "green"
-      "33": "yellow"
-      "34": "blue"
-      "35": "magenta"
-      "36": "cyan"
-      "37": "white"
     for code in [code1, code2] when code
       switch
         when code is '0'
@@ -160,8 +161,8 @@ class sh2png
           color = {color: color.color ? "default", bold: yes}
         when code is '21'
           color = {color: color.color ? "default", bold: no}
-        when color_only[code]
-          color = {color: color_only[code], bold: color.bold ? no}
+        when @colorCodes[code]
+          color = {color: @colorCodes[code], bold: color.bold ? no}
     color
 
   ###

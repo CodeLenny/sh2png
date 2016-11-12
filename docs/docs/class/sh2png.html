@@ -33,6 +33,27 @@
           <td>src&#47;sh2png.coffee</td>
         </tr>
       </table>
+      <h2>Variables Summary</h2>
+      <dl class='constants'>
+  <dt id='colorCodes-variable'>
+    colorCodes
+    =
+  </dt>
+  <dd>
+    <pre><code class='coffeescript'>{
+  &quot;39&quot;: &quot;default&quot;,
+  &quot;30&quot;: &quot;black&quot;,
+  &quot;31&quot;: &quot;red&quot;,
+  &quot;32&quot;: &quot;green&quot;,
+  &quot;33&quot;: &quot;yellow&quot;,
+  &quot;34&quot;: &quot;blue&quot;,
+  &quot;35&quot;: &quot;magenta&quot;,
+  &quot;36&quot;: &quot;cyan&quot;,
+  &quot;37&quot;: &quot;white&quot;
+}</code></pre>
+    
+  </dd>
+</dl>
       <h2>Class Method Summary</h2>
       <ul class='summary'>
   <li>
@@ -138,6 +159,16 @@ sh2png
       </span>
       &mdash;
       <span class='desc'>a path (or array of paths) to a BMF font to use when drawing the image. Defaults to Ubuntu Mono 10pt, included in <code>sh2png</code>. </span>
+    </li>
+    <li>
+      <span class='name'>colors</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>a color scheme to apply when formatting messages.  Colors must be native JavaScript rgba hex values including transparency, such as <code>0x0x5C6370FF</code>.  Structure: <code>{normal: {}, bold: {}, background}</code>, with colors <code>default</code>, <code>black</code>, <code>red</code>, <code>green</code>, <code>yellow</code>, <code>blue</code>, <code>magenta</code>, <code>cyan</code>, <code>white</code> under <code>normal</code> and <code>bold</code>. Defaults to using a theme based on <a href="https://github.com/Mayccoll/Gogh/blob/master/themes/one.dark.sh">Atom One Dark</a>. </span>
     </li>
   </ul>
   <h3>Returns:</h3>

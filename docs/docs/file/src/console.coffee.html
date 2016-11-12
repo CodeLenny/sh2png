@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset='UTF-8'>
+  <title>sh2png Documentation</title>
+  <script src='../../javascript/application.js'></script>
+  <script src='../../javascript/search.js'></script>
+  <link rel='stylesheet' href='../../stylesheets/application.css' type='text/css'>
+</head>
+  <body>
+    <div id='base' data-path='../../'></div>
+<div id='header'>
+  <div id='menu'>
+    <a href='../../extra/README.md.html' title='sh2png'>
+      sh2png
+    </a>
+    &raquo;
+    <a href='../../alphabetical_index.html' title='Index'>
+      Index
+    </a>
+    &raquo;
+    <span class='title'>src</span>
+    &raquo;
+    <span class='title'>console.coffee</span>
+  </div>
+</div>
+    <div id='content'>
+      <h1>
+        File:
+        console.coffee
+      </h1>
+      <table class='box'>
+        <tr>
+          <td>Defined in:</td>
+          <td>src</td>
+        </tr>
+      </table>
+      <h2>Variables Summary</h2>
+      <dl class='constants'>
+  <dt id='colorNames-variable'>
+    colorNames
+    =
+  </dt>
+  <dd>
+    <pre><code class='coffeescript'>[&quot;default&quot;, &quot;red&quot;, &quot;green&quot;, &quot;yellow&quot;, &quot;blue&quot;, &quot;magenta&quot;, &quot;cyan&quot;, &quot;white&quot;]</code></pre>
+    
+  </dd>
+  <dt id='cols-variable'>
+    cols
+    =
+  </dt>
+  <dd>
+    <pre><code class='coffeescript'>process</code></pre>
+    <div class='docstring'>
+  <p>All commands take sh2png.format options.</p>
+</div>
+<div class='tags'>
+</div>
+  </dd>
+  <dt id='background-variable'>
+    background
+    =
+  </dt>
+  <dd>
+    <pre><code class='coffeescript'>sh2png</code></pre>
+    
+  </dd>
+</dl>
+      <h2>Method Summary</h2>
+      <ul class='summary'>
+  <li>
+    <span class='signature'>
+      <a href='#collect-'>
+        ~
+(void)
+<b>collect</b><span>(val, memo)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Collect arguments into an array. 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#parseRGBA-'>
+        ~
+(void)
+<b>parseRGBA</b><span>(val)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Parse RGBA values 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#doColor-'>
+        ~
+(void)
+<b>doColor</b><span>(color, bold = true)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Given the name of a color, output the name in it&#39;s own color. 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#parseOpts-'>
+        ~
+(void)
+<b>parseOpts</b><span>(options)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Convert raw options into supported options by sh2png, including converting colors from flat options into an object. 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#getStdin-'>
+        ~
+(Promise&lt;String&gt;)
+<b>getStdin</b><span>()</span>
+      </a>
+    </span>
+    <span class='desc'>
+    </span>
+  </li>
+</ul>
+      <h2>Method Details</h2>
+      <div class='methods'>
+  <div class='method_details'>
+    <p class='signature' id='collect-'>
+      ~
+(void)
+<b>collect</b><span>(val, memo)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Collect arguments into an array.</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='parseRGBA-'>
+      ~
+(void)
+<b>parseRGBA</b><span>(val)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Parse RGBA values</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='doColor-'>
+      ~
+(void)
+<b>doColor</b><span>(color, bold = true)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Given the name of a color, output the name in it&#39;s own color.</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='parseOpts-'>
+      ~
+(void)
+<b>parseOpts</b><span>(options)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Convert raw options into supported options by sh2png, including converting colors from flat options into an object.</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='getStdin-'>
+      ~
+(Promise&lt;String&gt;)
+<b>getStdin</b><span>()</span>
+      <br>
+    </p>
+    <div class='tags'>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>Promise&lt;String&gt;</tt>
+      )
+      &mdash;
+      <span class='desc'>all stdin input as a utf8 string. </span>
+    </li>
+  </ul>
+</div>
+  </div>
+</div>
+    </div>
+    <div id='footer'>
+  By
+  <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
+    Codo
+  </a>
+  2.1.2
+  &#10034;
+  Press H to see the keyboard shortcuts
+  &#10034;
+  <a href='http://twitter.com/netzpirat' target='_parent'>@netzpirat</a>
+  &#10034;
+  <a href='http://twitter.com/_inossidabile' target='_parent'>@_inossidabile</a>
+</div>
+<iframe id='search_frame'></iframe>
+<div id='fuzzySearch'>
+  <input type='text'>
+  <ol></ol>
+</div>
+<div id='help'>
+  <p>
+    Quickly fuzzy find classes, mixins, methods, file:
+  </p>
+  <ul>
+    <li>
+      <span>T</span>
+      Open fuzzy finder dialog
+    </li>
+  </ul>
+  <p>
+    Control the navigation frame:
+  </p>
+  <ul>
+    <li>
+      <span>L</span>
+      Toggle list view
+    </li>
+    <li>
+      <span>C</span>
+      Show class list
+    </li>
+    <li>
+      <span>I</span>
+      Show mixin list
+    </li>
+    <li>
+      <span>F</span>
+      Show file list
+    </li>
+    <li>
+      <span>M</span>
+      Show method list
+    </li>
+    <li>
+      <span>E</span>
+      Show extras list
+    </li>
+  </ul>
+  <p>
+    You can focus and blur the search input:
+  </p>
+  <ul>
+    <li>
+      <span>S</span>
+      Focus search input
+    </li>
+    <li>
+      <span>Esc</span>
+      Blur search input
+    </li>
+  </ul>
+</div>
+  </body>
+</html>
