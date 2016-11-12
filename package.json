@@ -1,7 +1,7 @@
 {
   "name": "sh2png",
   "version": "0.0.0",
-  "description": "Get a PNG image of console output.",
+  "description": "Screenshot console output.",
   "main": "dist/sh2png.js",
   "scripts": {
     "test": "mocha --compilers coffee:coffee-script/register"
