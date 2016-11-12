@@ -16,7 +16,6 @@ describe "Formatting Mocha Output", ->
   it "should format output", ->
     mocha
       .then ({stdout}) ->
-        console.log stdout
         sh2png.format stdout,
           fonts: [
             "#{__dirname}/../font/Ubuntu_Mono_16pt.fnt",
