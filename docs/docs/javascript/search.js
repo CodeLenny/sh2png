@@ -1,0 +1,1 @@
+window.searchData = [{"t":"sh2png","p":"class/sh2png.html"},{"t":"src/sh2png.coffee","p":"file/src/sh2png.coffee.html"},{"t":"README.md","p":"extra/README.md.html"},{"t":"LICENSE","p":"extra/LICENSE.html"},{"t":"sh2png#exec","p":"class/sh2png.html#exec-dynamic"},{"t":"sh2png.format","p":"class/sh2png.html#format-static"}]

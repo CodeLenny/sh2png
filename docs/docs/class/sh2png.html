@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset='UTF-8'>
+  <title>sh2png Documentation</title>
+  <script src='../javascript/application.js'></script>
+  <script src='../javascript/search.js'></script>
+  <link rel='stylesheet' href='../stylesheets/application.css' type='text/css'>
+</head>
+  <body>
+    <div id='base' data-path='../'></div>
+<div id='header'>
+  <div id='menu'>
+    <a href='../extra/README.md.html' title='sh2png'>
+      sh2png
+    </a>
+    &raquo;
+    <a href='../alphabetical_index.html' title='Index'>
+      Index
+    </a>
+    &raquo;
+    <span class='title'>sh2png</span>
+  </div>
+</div>
+    <div id='content'>
+      <h1>
+        Class:
+        sh2png
+      </h1>
+      <table class='box'>
+        <tr>
+          <td>Defined in:</td>
+          <td>src&#47;sh2png.coffee</td>
+        </tr>
+      </table>
+      <h2>Class Method Summary</h2>
+      <ul class='summary'>
+  <li>
+    <span class='signature'>
+      <a href='#format-static'>
+        .
+(Promise&lt;Image&gt;)
+<b>format</b><span>(str, opts = {})</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Given a string representing console output, convert the text into an image. 
+    </span>
+  </li>
+</ul>
+      <h2>Instance Method Summary</h2>
+      <ul class='summary'>
+  <li>
+    <span class='signature'>
+      <a href='#exec-dynamic'>
+        #
+(Promise&lt;Image&gt;)
+<b>exec</b><span>(cmd, opts = {})</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Given a shell command, execute the command, then format into an image using <a href='../class/sh2png.html#format-static'>sh2png.format</a>. 
+    </span>
+  </li>
+</ul>
+      <h2>Class Method Details</h2>
+      <div class='methods'>
+  <div class='method_details'>
+    <p class='signature' id='format-static'>
+      .
+(Promise&lt;Image&gt;)
+<b>format</b><span>(str, opts = {})</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Given a string representing console output, convert the text into an image.</p>
+  <div class='examples'>
+    <h3>Examples:</h3>
+    <h4>
+      Write output to file, using JavaScript callbacks
+    </h4>
+    <pre><code class='coffeescript'>sh2png = require(&quot;sh2png&quot;)
+output = &quot;\\e[32mHello!\\e[0m&quot;
+sh2png
+  .format(output)
+  .then(function(img) {
+    img.write(__dirname+&quot;&#47;hello.png&quot;, function() {
+      console.log(output+&quot; written to hello.png&quot;);
+    });
+  });</code></pre>
+    <h4>
+      Get Base64&#39;d output, using Promisified methods and CoffeeScript
+    </h4>
+    <pre><code class='coffeescript'>sh2png = require &quot;sh2png&quot;
+output = &quot;\\e[32mHello!\\e[0m&quot;
+sh2png
+  .format output
+  .then (img) -&gt; img.getBase64Async &quot;image&#47;png&quot;
+  .then (base64) -&gt;
+    console.log &quot;Base 64&#39;d #{output}: #{base64}&quot;</code></pre>
+  </div>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>str</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>console output to format. </span>
+    </li>
+  </ul>
+  <h3>
+    Options Hash:
+    (opts):
+  </h3>
+  <ul class='options'>
+    <li>
+      <span class='name'>width</span>
+      <span class='type'>
+        (
+          <tt>Number</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>the console width to wrap characters at.  Defaults to the longest line in the string. </span>
+    </li>
+    <li>
+      <span class='name'>font</span>
+      <span class='type'>
+        (
+          <tt>String, Array&lt;String&gt;</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>a path (or array of paths) to a BMF font to use when drawing the image. Defaults to Ubuntu Mono 10pt, included in <code>sh2png</code>. </span>
+    </li>
+  </ul>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>Promise&lt;Image&gt;</tt>
+      )
+      &mdash;
+      <span class='desc'>a <a href="https://github.com/oliver-moran/jimp">JIMP</a> image, which supports <a href="https://github.com/oliver-moran/jimp#writing-to-files"><code>image.write(path, cb)</code></a>, <a href="https://github.com/oliver-moran/jimp#data-uri"><code>image.getBase64(mime, cb)</code></a>, etc. Extended to add image.writeAsync, image.getBase64Async. </span>
+    </li>
+  </ul>
+</div>
+  </div>
+</div>
+      <h2>Instance Method Details</h2>
+      <div class='methods'>
+  <div class='method_details'>
+    <p class='signature' id='exec-dynamic'>
+      #
+(Promise&lt;Image&gt;)
+<b>exec</b><span>(cmd, opts = {})</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Given a shell command, execute the command, then format into an image using <a href='../class/sh2png.html#format-static'>sh2png.format</a>.</p>
+  <div class='examples'>
+    <h3>Examples:</h3>
+    <h4>
+      Run Mocha, and write output to file using JavaScript callbacks
+    </h4>
+    <pre><code class='coffeescript'>sh2png = require(&quot;sh2png&quot;)
+sh2png
+  .run(&quot;mocha&quot;)
+  .then(function(img) {
+    img.write(__dirname+&quot;&#47;output.png&quot;, function() {
+      console.log(&quot;Mocha output written to output.png&quot;);
+    });
+  });</code></pre>
+    <h4>
+      Run Mocha, and get Base64&#39;d output using Promisified methods and CoffeeScript
+    </h4>
+    <pre><code class='coffeescript'>sh2png = require &quot;sh2png&quot;
+sh2png
+  .run &quot;mocha&quot;
+  .then (img) -&gt; img.getBase64Async &quot;image&#47;png&quot;
+  .then (base64) -&gt;
+    console.log &quot;Base64&#39;d Mocha output: #{base64}&quot;</code></pre>
+  </div>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>cmd</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>the shell command to run </span>
+    </li>
+    <li>
+      <span class='name'>opts</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>options to configure running the given command and formatting the image. </span>
+    </li>
+  </ul>
+  <h3>
+    Options Hash:
+    (opts):
+  </h3>
+  <ul class='options'>
+    <li>
+      <span class='name'>width</span>
+      <span class='type'>
+        (
+          <tt>Number</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>the console width to wrap characters at.  Defaults to 80 characters </span>
+    </li>
+    <li>
+      <span class='name'>exec</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>options passed to NodeJS&#39;s <a href="https://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback"><code>exec</code></a> </span>
+    </li>
+    <li>
+      <span class='name'>font</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>a path to a BMF font to use when drawing the image.  Defaults to Ubuntu Mono 10pt, included in <code>sh2png</code>. </span>
+    </li>
+  </ul>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>Promise&lt;Image&gt;</tt>
+      )
+      &mdash;
+      <span class='desc'>a <a href="https://github.com/oliver-moran/jimp">JIMP</a> image, which supports <a href="https://github.com/oliver-moran/jimp#writing-to-files"><code>image.write(path, cb)</code></a>, <a href="https://github.com/oliver-moran/jimp#data-uri"><code>image.getBase64(mime, cb)</code></a>, etc. Extended to add image.writeAsync, image.getBase64Async. </span>
+    </li>
+  </ul>
+</div>
+  </div>
+</div>
+    </div>
+    <div id='footer'>
+  By
+  <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
+    Codo
+  </a>
+  2.1.2
+  &#10034;
+  Press H to see the keyboard shortcuts
+  &#10034;
+  <a href='http://twitter.com/netzpirat' target='_parent'>@netzpirat</a>
+  &#10034;
+  <a href='http://twitter.com/_inossidabile' target='_parent'>@_inossidabile</a>
+</div>
+<iframe id='search_frame'></iframe>
+<div id='fuzzySearch'>
+  <input type='text'>
+  <ol></ol>
+</div>
+<div id='help'>
+  <p>
+    Quickly fuzzy find classes, mixins, methods, file:
+  </p>
+  <ul>
+    <li>
+      <span>T</span>
+      Open fuzzy finder dialog
+    </li>
+  </ul>
+  <p>
+    Control the navigation frame:
+  </p>
+  <ul>
+    <li>
+      <span>L</span>
+      Toggle list view
+    </li>
+    <li>
+      <span>C</span>
+      Show class list
+    </li>
+    <li>
+      <span>I</span>
+      Show mixin list
+    </li>
+    <li>
+      <span>F</span>
+      Show file list
+    </li>
+    <li>
+      <span>M</span>
+      Show method list
+    </li>
+    <li>
+      <span>E</span>
+      Show extras list
+    </li>
+  </ul>
+  <p>
+    You can focus and blur the search input:
+  </p>
+  <ul>
+    <li>
+      <span>S</span>
+      Focus search input
+    </li>
+    <li>
+      <span>Esc</span>
+      Blur search input
+    </li>
+  </ul>
+</div>
+  </body>
+</html>

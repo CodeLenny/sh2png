@@ -1,0 +1,8 @@
+--name "sh2png"
+--readme README.md
+--title "sh2png Documentation"
+--output ./docs/docs
+./src
+-
+README.md
+LICENSE

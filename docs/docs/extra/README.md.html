@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset='UTF-8'>
+  <title>sh2png Documentation</title>
+  <script src='../javascript/application.js'></script>
+  <script src='../javascript/search.js'></script>
+  <link rel='stylesheet' href='../stylesheets/application.css' type='text/css'>
+</head>
+  <body>
+    <div id='base' data-path='../'></div>
+<div id='header'>
+  <div id='menu'>
+    <a href='../extra/README.md.html' title='sh2png'>
+      sh2png
+    </a>
+    &raquo;
+    <a href='../alphabetical_index.html' title='Index'>
+      Index
+    </a>
+    &raquo;
+    <span class='title'>README.md</span>
+  </div>
+</div>
+    <div id='content'>
+      <nav class='toc'>
+        <p class='title'>
+          <a class='hide_toc' href='#'>
+            <strong>Table of Contents</strong>
+          </a>
+          <small>
+            (<a class='float_toc' href='#'>left</a>)
+          </small>
+        </p>
+      </nav>
+      <div id='filecontents'>
+        <h1 id="shell-to-png">Shell to PNG</h1><p>Tools exist to screenshot websites, but why aren&#39;t there tools to screenshot console contents?</p><p>Add sample usage to your README as part of your build system, keep a tutorial&#39;s command line examples updated, or easily create a bug report without as much copy/paste.</p><p>And yes, the tool is compatible with all shells and many image formats, despite it&#39;s misleading name.</p><p><a href="https://travis-ci.org/CodeLenny/sh2png"><img src="https://travis-ci.org/CodeLenny/sh2png.svg?branch=master" alt="Build Status"></a></p><h2 id="sample-output">Sample Output</h2><p><img src="test/sample/format-mocha.png" alt="Mocha&#39;s output"></p><p>This image was created by passing the result of calling <a href="https://mochajs.org/">Mocha</a> into <code>sh2png.format</code>.</p><p>See <a href="test/test-format-mocha-output.coffee">test-format-mocha-output.coffee</a> for the test that produced the output above.
+See the <a href="test/sample/">results</a> of testing sh2png for other examples.</p><h2 id="installation">Installation</h2><p>Install via <a href="https://www.npmjs.com/">NPM</a>.</p><p>Don&#39;t have NPM?  Grab <a href="https://nodejs.org/en/download/">NodeJS</a> or <a href="https://github.com/creationix/nvm">Node Version Manager</a>.</p><pre><code class="lang-sh">npm install [--save-dev] sh2png
+</code></pre>
+<h2 id="node-js-usage">Node.js Usage</h2>
+<h3 id="formatting-strings">Formatting Strings</h3><p>Got some text from the console?  Call <code>sh2png.format</code> to turn a string of console text into an image.  <code>format</code> returns a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>.</p><p>Don&#39;t want to use Promises?  Here&#39;s some standard NodeJS code.</p><pre><code class="lang-js">sh2png = require(&quot;sh2png&quot;);
+exec = require(&quot;child_process&quot;).exec;
+env = process.env;
+env.force_color_prompt = &quot;yes&quot;;
+
+exec(&quot;mocha&quot;, {env: env}, function (err, stdout, stderr) {
+  // handle error
+  sh2png
+    .format(stdout)
+    .then(function (img) {
+      img.write(__dirname + &quot;mocha_output.png&quot;, function(err) {
+        // handle error
+      });
+    })
+    .catch(function (err) {
+      // handle error
+    });
+});
+</code></pre><p>Want to use <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promises</a>?  (Example in CoffeeScript)</p><pre><code class="lang-coffeescript">sh2png = require &quot;sh2png&quot;
+{exec} = require &quot;child-process-promise&quot;
+env = process.env
+env.force_color_prompt = &quot;yes&quot;
+
+exec &quot;mocha&quot;, {env}
+  .then ({stdout}) -&gt;
+    sh2png.format stdout
+  .then (img) -&gt;
+    img.writeAsync &quot;#{__dirname}/mocha_output.png&quot;
+  .then -&gt;
+    # image written
+  .catch (err) -&gt;
+    console.log err
+</code></pre>
+
+      </div>
+    </div>
+    <div id='footer'>
+  By
+  <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
+    Codo
+  </a>
+  2.1.2
+  &#10034;
+  Press H to see the keyboard shortcuts
+  &#10034;
+  <a href='http://twitter.com/netzpirat' target='_parent'>@netzpirat</a>
+  &#10034;
+  <a href='http://twitter.com/_inossidabile' target='_parent'>@_inossidabile</a>
+</div>
+<iframe id='search_frame'></iframe>
+<div id='fuzzySearch'>
+  <input type='text'>
+  <ol></ol>
+</div>
+<div id='help'>
+  <p>
+    Quickly fuzzy find classes, mixins, methods, file:
+  </p>
+  <ul>
+    <li>
+      <span>T</span>
+      Open fuzzy finder dialog
+    </li>
+  </ul>
+  <p>
+    Control the navigation frame:
+  </p>
+  <ul>
+    <li>
+      <span>L</span>
+      Toggle list view
+    </li>
+    <li>
+      <span>C</span>
+      Show class list
+    </li>
+    <li>
+      <span>I</span>
+      Show mixin list
+    </li>
+    <li>
+      <span>F</span>
+      Show file list
+    </li>
+    <li>
+      <span>M</span>
+      Show method list
+    </li>
+    <li>
+      <span>E</span>
+      Show extras list
+    </li>
+  </ul>
+  <p>
+    You can focus and blur the search input:
+  </p>
+  <ul>
+    <li>
+      <span>S</span>
+      Focus search input
+    </li>
+    <li>
+      <span>Esc</span>
+      Blur search input
+    </li>
+  </ul>
+</div>
+  </body>
+</html>
