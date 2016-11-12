@@ -74,4 +74,7 @@ exec "mocha", {env}
     console.log err
 ```
 
+See documentation for [sh2png.format] for more information.
+
 [Promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[sh2png.format]: https://codelenny.github.io/sh2png/docs/#https://codelenny.github.io/sh2png/docs/class/sh2png.html#format-static
