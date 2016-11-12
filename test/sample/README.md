@@ -25,3 +25,6 @@ In addition, each image must be listed in this README, describing what test crea
 - `missing-character-fallback-font.png`
   is created by [test-custom-font][../test-custom-font.coffee].
   It demonstrates using multiple fonts to create a string using characters found in each of the font files, but not both.
+- `format-mocha.png`
+  is created by [test-format-mocha-output][../test-format-mocha-output.coffee].
+  It demonstrates formatting [Mocha](https://mochajs.org/)'s output.
