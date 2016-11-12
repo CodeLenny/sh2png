@@ -128,7 +128,7 @@ class sh2png
       "37": "white"
     for code in [code1, code2] when code
       switch
-        when code is '31'
+        when code is '0'
           color = {color: "default", bold: no}
         when code is '1'
           color = {color: color.color ? "default", bold: yes}
@@ -175,25 +175,25 @@ class sh2png
     opts.width ?= Math.max str.split("\n").map((l) -> l.length)...
     # Default colors from https://github.com/Mayccoll/Gogh/blob/master/themes/one.dark.sh
     opts.colors ?= {normal: {}, bold: {}}
-    opts.colors.normal.default ?= 0x5C6370
-    opts.colors.normal.black ?= 0x000000
-    opts.colors.normal.red ?= 0xE06C75
-    opts.colors.normal.green ?= 0x98C379
-    opts.colors.normal.yellow ?= 0xD19A66
-    opts.colors.normal.blue ?= 0x61AFEF
-    opts.colors.normal.magenta ?= 0xC678DD
-    opts.colors.normal.cyan ?= 0x56B6C2
-    opts.colors.normal.white ?= 0xABB2BF
-    opts.colors.bold.default ?= 0x5C6370
-    opts.colors.bold.black ?= 0x5C6370
-    opts.colors.bold.red ?= 0xE06C75
-    opts.colors.bold.green ?= 0x98C379
-    opts.colors.bold.yellow ?= 0xD19A66
-    opts.colors.bold.blue ?= 0x61AFEF
-    opts.colors.bold.magenta ?= 0xC678DD
-    opts.colors.bold.cyan ?= 0x56B6C2
-    opts.colors.bold.white ?= 0xFFFEFE
-    opts.colors.background ?= 0x1E2127
+    opts.colors.normal.default ?= 0x5C6370FF
+    opts.colors.normal.black ?= 0x000000FF
+    opts.colors.normal.red ?= 0xE06C75FF
+    opts.colors.normal.green ?= 0x98C379FF
+    opts.colors.normal.yellow ?= 0xD19A66FF
+    opts.colors.normal.blue ?= 0x61AFEFFF
+    opts.colors.normal.magenta ?= 0xC678DDFF
+    opts.colors.normal.cyan ?= 0x56B6C2FF
+    opts.colors.normal.white ?= 0xABB2BFFF
+    opts.colors.bold.default ?= 0x5C6370FF
+    opts.colors.bold.black ?= 0x5C6370FF
+    opts.colors.bold.red ?= 0xE06C75FF
+    opts.colors.bold.green ?= 0x98C379FF
+    opts.colors.bold.yellow ?= 0xD19A66FF
+    opts.colors.bold.blue ?= 0x61AFEFFF
+    opts.colors.bold.magenta ?= 0xC678DDFF
+    opts.colors.bold.cyan ?= 0x56B6C2FF
+    opts.colors.bold.white ?= 0xFFFEFEFF
+    opts.colors.background ?= 0x1E2127FF
     fonts = null
     image = null
     if Array.isArray opts.fonts
