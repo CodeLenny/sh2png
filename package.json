@@ -23,7 +23,7 @@
     "mocha": "^3.1.2"
   },
   "dependencies": {
-    "@codelenny/jimp": "^1.0.0",
+    "@codelenny/jimp": "^2.0.0",
     "@codelenny/load-bmfont": "^1.0.0",
     "bluebird": "^3.4.6"
   }
