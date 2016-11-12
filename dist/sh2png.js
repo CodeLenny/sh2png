@@ -18,20 +18,35 @@
     function sh2png() {}
 
     sh2png.getImageDimensions = function(str, opts) {
-      var load;
+      var f, load;
       load = Promise.promisify(require("@codelenny/load-bmfont"));
-      return load(opts.font).then(function(font) {
-        var char, charWidth, height, j, len, m, ref, width;
+      f = opts.fonts;
+      if (Array.isArray(f)) {
+        f = f[0];
+      }
+      return load(f).then(function(font) {
+        var char, charWidth, fallback, height, j, len, m, ref, width;
         height = str.split("\n").length * font.common.lineHeight;
         m = null;
+        fallback = null;
         ref = font.chars;
         for (j = 0, len = ref.length; j < len; j++) {
           char = ref[j];
-          if (!(char.id === 115)) {
-            continue;
+          if (char.id === 115) {
+            m = char;
+            break;
           }
-          m = char;
-          break;
+          if (!fallback) {
+            if (char.width && char.xadvance && char.xoffset) {
+              fallback = char;
+            }
+          }
+        }
+        if (m == null) {
+          m = fallback;
+        }
+        if (!m) {
+          throw new Error("Couldn't find a valid character in the font given.");
         }
         charWidth = Math.max(m.xadvance, m.width + m.xoffset);
         width = (opts.width * charWidth) + 1;
@@ -116,13 +131,23 @@
      */
 
     sh2png.drawString = function(str, color, line, char) {
-      return function(font, image, opts) {
-        var c;
+      return function(fonts, image, opts) {
+        var c, firstChar, font, ref, ref1;
+        font = fonts;
+        if (Array.isArray(fonts)) {
+          font = fonts[0];
+        }
         if (!font.common.charWidth) {
-          font.common.charWidth = font.chars.m.width;
+          if ((ref = font.chars.m) != null ? ref.width : void 0) {
+            font.common.charWidth = font.chars.m.width;
+          } else if ((ref1 = font.chars[firstChar = Object.keys(font.chars)[0]]) != null ? ref1.width : void 0) {
+            font.common.charWidth = font.chars[firstChar].width;
+          } else {
+            throw new Error("Couldn't find any characters in the font given");
+          }
         }
         c = opts.colors[color.bold ? "bold" : "normal"][color.color];
-        image.print(font, char * font.common.charWidth, line * font.common.lineHeight, str, {
+        image.print(fonts, char * font.common.charWidth, line * font.common.lineHeight, str, {
           color: c
         });
         return Promise.resolve();
@@ -160,7 +185,7 @@
         code = ref[j];
         if (code) {
           switch (false) {
-            case code !== '31':
+            case code !== '0':
               color = {
                 color: "default",
                 bold: false
@@ -215,8 +240,8 @@
     
     @param {String} str console output to format.
     @option opts {Number} width the console width to wrap characters at.  Defaults to the longest line in the string.
-    @option opts {String} font a path to a BMF font to use when drawing the image.  Defaults to Ubuntu Mono 10pt, included
-      in `sh2png`.
+    @option opts {String, Array<String>} font a path (or array of paths) to a BMF font to use when drawing the image.
+      Defaults to Ubuntu Mono 10pt, included in `sh2png`.
     @return {Promise<Image>} a [JIMP](https://github.com/oliver-moran/jimp) image, which supports
       [`image.write(path, cb)`](https://github.com/oliver-moran/jimp#writing-to-files),
       [`image.getBase64(mime, cb)`](https://github.com/oliver-moran/jimp#data-uri), etc.
@@ -224,12 +249,12 @@
      */
 
     sh2png.format = function(str, opts) {
-      var base, base1, base10, base11, base12, base13, base14, base15, base16, base17, base18, base2, base3, base4, base5, base6, base7, base8, base9, font, image;
+      var base, base1, base10, base11, base12, base13, base14, base15, base16, base17, base18, base2, base3, base4, base5, base6, base7, base8, base9, fonts, image;
       if (opts == null) {
         opts = {};
       }
-      if (opts.font == null) {
-        opts.font = __dirname + "/../font/Ubuntu_Mono_16pt.fnt";
+      if (opts.fonts == null) {
+        opts.fonts = __dirname + "/../font/Ubuntu_Mono_16pt.fnt";
       }
       if (opts.width == null) {
         opts.width = Math.max.apply(Math, str.split("\n").map(function(l) {
@@ -243,66 +268,73 @@
         };
       }
       if ((base = opts.colors.normal)["default"] == null) {
-        base["default"] = 0x5C6370;
+        base["default"] = 0x5C6370FF;
       }
       if ((base1 = opts.colors.normal).black == null) {
-        base1.black = 0x000000;
+        base1.black = 0x000000FF;
       }
       if ((base2 = opts.colors.normal).red == null) {
-        base2.red = 0xE06C75;
+        base2.red = 0xE06C75FF;
       }
       if ((base3 = opts.colors.normal).green == null) {
-        base3.green = 0x98C379;
+        base3.green = 0x98C379FF;
       }
       if ((base4 = opts.colors.normal).yellow == null) {
-        base4.yellow = 0xD19A66;
+        base4.yellow = 0xD19A66FF;
       }
       if ((base5 = opts.colors.normal).blue == null) {
-        base5.blue = 0x61AFEF;
+        base5.blue = 0x61AFEFFF;
       }
       if ((base6 = opts.colors.normal).magenta == null) {
-        base6.magenta = 0xC678DD;
+        base6.magenta = 0xC678DDFF;
       }
       if ((base7 = opts.colors.normal).cyan == null) {
-        base7.cyan = 0x56B6C2;
+        base7.cyan = 0x56B6C2FF;
       }
       if ((base8 = opts.colors.normal).white == null) {
-        base8.white = 0xABB2BF;
+        base8.white = 0xABB2BFFF;
       }
       if ((base9 = opts.colors.bold)["default"] == null) {
-        base9["default"] = 0x5C6370;
+        base9["default"] = 0x5C6370FF;
       }
       if ((base10 = opts.colors.bold).black == null) {
-        base10.black = 0x5C6370;
+        base10.black = 0x5C6370FF;
       }
       if ((base11 = opts.colors.bold).red == null) {
-        base11.red = 0xE06C75;
+        base11.red = 0xE06C75FF;
       }
       if ((base12 = opts.colors.bold).green == null) {
-        base12.green = 0x98C379;
+        base12.green = 0x98C379FF;
       }
       if ((base13 = opts.colors.bold).yellow == null) {
-        base13.yellow = 0xD19A66;
+        base13.yellow = 0xD19A66FF;
       }
       if ((base14 = opts.colors.bold).blue == null) {
-        base14.blue = 0x61AFEF;
+        base14.blue = 0x61AFEFFF;
       }
       if ((base15 = opts.colors.bold).magenta == null) {
-        base15.magenta = 0xC678DD;
+        base15.magenta = 0xC678DDFF;
       }
       if ((base16 = opts.colors.bold).cyan == null) {
-        base16.cyan = 0x56B6C2;
+        base16.cyan = 0x56B6C2FF;
       }
       if ((base17 = opts.colors.bold).white == null) {
-        base17.white = 0xFFFEFE;
+        base17.white = 0xFFFEFEFF;
       }
       if ((base18 = opts.colors).background == null) {
-        base18.background = 0x1E2127;
+        base18.background = 0x1E2127FF;
       }
-      font = null;
+      fonts = null;
       image = null;
-      return Promise.join(Jimp.loadFont(opts.font), this.createCanvas(str, opts), this.splitString(str, opts)).then(function(arg) {
-        var all, f, fn, i, j, len, split;
+      if (Array.isArray(opts.fonts)) {
+        fonts = Promise.map(opts.fonts, function(font) {
+          return Jimp.loadFont(font);
+        });
+      } else {
+        fonts = Jimp.loadFont(opts.fonts);
+      }
+      return Promise.join(fonts, this.createCanvas(str, opts), this.splitString(str, opts)).then(function(arg) {
+        var all, f, fn, font, i, j, len, split;
         f = arg[0], i = arg[1], split = arg[2];
         font = f;
         image = i;
