@@ -4,7 +4,7 @@ should = chai.should()
 sh2png = require "../src/sh2png"
 shouldMatch = require "./match"
 
-char = "✔"
+char = "✓"
 
 describe "Characters missing from Ubuntu Mono (#{char})", ->
   
