@@ -1,30 +1,3 @@
-# test/sample/
+# test/output/
 
-Sample outputs are included, and can be compared against dynamic outputs in `test/output/`.
-Commits to this folder need to be manually reviewed, to ensure that images look like they should.
-
-In addition, each image must be listed in this README, describing what test creates it.
-
-## Images
-
-- `oneliner.png`
-  is created by [test-format-plain](../test-format-plain.coffee).
-  It contains a single line of unformatted text, for very quick testing.
-- `block.png`
-  is created by [test-format-plain](../test-format-plain.coffee).
-  It contains three lines of textual output, with no coloring.
-- `simple-color-normal-{default,black,red,green,yellow,blue,magenta,cyan,white}.png`
-  are created by [test-colors](../test-colors.coffee).
-  Each image contains the name of it's color, in it's own color.
-- `missing-character-default-font.png`
-  is created by [test-custom-font](../test-custom-font.coffee).
-  It demonstrates what is outputted if a character is drawn that doesn't exist in the given font.
-- `missing-character-custom-font.png`
-  is created by [test-custom-font](../test-custom-font.coffee).
-  It demonstrates using a custom font to draw a character not in the default font.
-- `missing-character-fallback-font.png`
-  is created by [test-custom-font](../test-custom-font.coffee).
-  It demonstrates using multiple fonts to create a string using characters found in each of the font files, but not both.
-- `format-mocha.png`
-  is created by [test-format-mocha-output](../test-format-mocha-output.coffee).
-  It demonstrates formatting [Mocha](https://mochajs.org/)'s output.
+Tests write images here, either to test that they can output, or to test against images in `test/sample/`.
