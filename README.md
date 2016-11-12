@@ -5,6 +5,7 @@ Add sample usage to your README as part of your build system, keep a tutorial's 
 
 And yes, the tool is compatible with all shells and many image formats, despite it's misleading name.
 
+[![npm](https://img.shields.io/npm/v/sh2png.svg)](https://www.npmjs.com/package/sh2png)
 [![Build Status](https://travis-ci.org/CodeLenny/sh2png.svg?branch=master)](https://travis-ci.org/CodeLenny/sh2png)
 
 ## Sample Output
