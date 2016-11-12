@@ -12,14 +12,24 @@ class sh2png
   ###
   @getImageDimensions = (str, opts) ->
     load = Promise.promisify require "@codelenny/load-bmfont"
-    load opts.font
+    f = opts.fonts
+    f = f[0] if Array.isArray f
+    load f
       .then (font) ->
         height = str.split("\n").length * font.common.lineHeight
         # get the character "m" (ASCII 115) to determine width
         m = null
-        for char in font.chars when char.id is 115
-          m = char
-          break
+        fallback = null
+        for char in font.chars
+          if char.id is 115
+            m = char
+            break
+          unless fallback
+            if char.width and char.xadvance and char.xoffset
+              fallback = char
+        m ?= fallback
+        unless m
+          throw new Error("Couldn't find a valid character in the font given.")
         charWidth = Math.max m.xadvance, m.width + m.xoffset
         width = (opts.width * charWidth) + 1
         [height, width]
@@ -83,11 +93,18 @@ class sh2png
   @private
   ###
   @drawString = (str, color, line, char) ->
-    (font, image, opts) ->
+    (fonts, image, opts) ->
+      font = fonts
+      font = fonts[0] if Array.isArray fonts
       unless font.common.charWidth
-        font.common.charWidth = font.chars.m.width
+        if font.chars.m?.width
+          font.common.charWidth = font.chars.m.width
+        else if font.chars[firstChar = Object.keys(font.chars)[0]]?.width
+          font.common.charWidth = font.chars[firstChar].width
+        else
+          throw new Error("Couldn't find any characters in the font given")
       c = opts.colors[if color.bold then "bold" else "normal"][color.color]
-      image.print font, char * font.common.charWidth, line * font.common.lineHeight, str, {color: c}
+      image.print fonts, char * font.common.charWidth, line * font.common.lineHeight, str, {color: c}
       Promise.resolve()
 
   ###
@@ -146,15 +163,15 @@ class sh2png
 
   @param {String} str console output to format.
   @option opts {Number} width the console width to wrap characters at.  Defaults to the longest line in the string.
-  @option opts {String} font a path to a BMF font to use when drawing the image.  Defaults to Ubuntu Mono 10pt, included
-    in `sh2png`.
+  @option opts {String, Array<String>} font a path (or array of paths) to a BMF font to use when drawing the image.
+    Defaults to Ubuntu Mono 10pt, included in `sh2png`.
   @return {Promise<Image>} a [JIMP](https://github.com/oliver-moran/jimp) image, which supports
     [`image.write(path, cb)`](https://github.com/oliver-moran/jimp#writing-to-files),
     [`image.getBase64(mime, cb)`](https://github.com/oliver-moran/jimp#data-uri), etc.
     Extended to add image.writeAsync, image.getBase64Async.
   ###
   @format: (str, opts={}) ->
-    opts.font ?= "#{__dirname}/../font/Ubuntu_Mono_16pt.fnt"
+    opts.fonts ?= "#{__dirname}/../font/Ubuntu_Mono_16pt.fnt"
     opts.width ?= Math.max str.split("\n").map((l) -> l.length)...
     # Default colors from https://github.com/Mayccoll/Gogh/blob/master/themes/one.dark.sh
     opts.colors ?= {normal: {}, bold: {}}
@@ -177,9 +194,13 @@ class sh2png
     opts.colors.bold.cyan ?= 0x56B6C2
     opts.colors.bold.white ?= 0xFFFEFE
     opts.colors.background ?= 0x1E2127
-    font = null
+    fonts = null
     image = null
-    Promise.join Jimp.loadFont(opts.font), @createCanvas(str, opts), @splitString(str, opts)
+    if Array.isArray opts.fonts
+      fonts = Promise.map opts.fonts, (font) -> Jimp.loadFont font
+    else
+      fonts = Jimp.loadFont opts.fonts
+    Promise.join fonts, @createCanvas(str, opts), @splitString(str, opts)
       .then ([f, i, split]) ->
         font = f
         image = i
