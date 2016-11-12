@@ -76,5 +76,10 @@ exec "mocha", {env}
 
 See documentation for [sh2png.format] for more information.
 
+## Extending sh2png
+
+If you want to extend sh2png, you're in luck.  The source is object oriented, with documentation for each method.
+Simply override the methods you want to replace, and you're good to go!
+
 [Promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
 [sh2png.format]: https://codelenny.github.io/sh2png/docs/#https://codelenny.github.io/sh2png/docs/class/sh2png.html#format-static
