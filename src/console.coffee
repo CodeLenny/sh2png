@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 Promise = require "bluebird"
 fs = Promise.promisifyAll require "fs"
 pkg = require "../package"
