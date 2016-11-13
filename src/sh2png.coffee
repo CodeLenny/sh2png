@@ -115,7 +115,6 @@ class sh2png
         continue
       if escape > 0
         all.push @drawString str.substr(0, escape), color, line, char
-        char++
       char += escape
       [sequence, code1, code2] = str.match colorCode
       color = @parseColor color, code1, code2, opts
@@ -137,10 +136,11 @@ class sh2png
       font = fonts
       font = fonts[0] if Array.isArray fonts
       unless font.common.charWidth
-        if font.chars.m?.width
-          font.common.charWidth = font.chars.m.width
-        else if font.chars[firstChar = Object.keys(font.chars)[0]]?.width
-          font.common.charWidth = font.chars[firstChar].width
+        if font.chars.m?.xadvance
+          font.common.charWidth = font.chars.m.xadvance
+          # from jimp: font.chars.m.xoffset + (font.chars.m.xadvance ? 0)
+        else if font.chars[firstChar = Object.keys(font.chars)[0]]?.xadvance
+          font.common.charWidth = font.chars[firstChar].xadvance
         else
           throw new Error("Couldn't find any characters in the font given")
       c = opts.colors[if color.bold then "bold" else "normal"][color.color]

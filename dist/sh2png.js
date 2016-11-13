@@ -155,7 +155,6 @@
         }
         if (escape > 0) {
           all.push(this.drawString(str.substr(0, escape), color, line, char));
-          char++;
         }
         char += escape;
         ref = str.match(colorCode), sequence = ref[0], code1 = ref[1], code2 = ref[2];
@@ -185,10 +184,10 @@
           font = fonts[0];
         }
         if (!font.common.charWidth) {
-          if ((ref = font.chars.m) != null ? ref.width : void 0) {
-            font.common.charWidth = font.chars.m.width;
-          } else if ((ref1 = font.chars[firstChar = Object.keys(font.chars)[0]]) != null ? ref1.width : void 0) {
-            font.common.charWidth = font.chars[firstChar].width;
+          if ((ref = font.chars.m) != null ? ref.xadvance : void 0) {
+            font.common.charWidth = font.chars.m.xadvance;
+          } else if ((ref1 = font.chars[firstChar = Object.keys(font.chars)[0]]) != null ? ref1.xadvance : void 0) {
+            font.common.charWidth = font.chars[firstChar].xadvance;
           } else {
             throw new Error("Couldn't find any characters in the font given");
           }
