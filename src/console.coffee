@@ -110,8 +110,8 @@ program.option "--background",
 
 program
   .command "format", "Format text piped into the command"
-  .alias "-"
   .action (options) ->
+    options = {} unless options and options isnt "-"
     options = parseOpts options
     getStdin()
       .then (stdin) ->

@@ -163,7 +163,10 @@
 
   program.option("--background", "Set the background color.  RGBA value.  Default: 0x" + (background.toString(16).toUpperCase()), parseRGBA, background);
 
-  program.command("format", "Format text piped into the command").alias("-").action(function(options) {
+  program.command("format", "Format text piped into the command").action(function(options) {
+    if (!(options && options !== "-")) {
+      options = {};
+    }
     options = parseOpts(options);
     return getStdin().then(function(stdin) {
       return sh2png.format(stdin, options);

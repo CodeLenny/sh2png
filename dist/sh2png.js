@@ -10,6 +10,7 @@
 
     /*
     @property {Object} the default color scheme for coloring messages.
+    Default colors from https://github.com/Mayccoll/Gogh/blob/master/themes/one.dark.sh
      */
     function sh2png() {}
 
@@ -152,7 +153,10 @@
           str = str.substr(br + 1);
           continue;
         }
-        all.push(this.drawString(str.substr(0, escape), color, line, char));
+        if (escape > 0) {
+          all.push(this.drawString(str.substr(0, escape), color, line, char));
+          char++;
+        }
         char += escape;
         ref = str.match(colorCode), sequence = ref[0], code1 = ref[1], code2 = ref[2];
         color = this.parseColor(color, code1, code2, opts);
@@ -285,7 +289,7 @@
      */
 
     sh2png.format = function(str, opts) {
-      var base, base1, base2, color, fonts, image, j, len, ref;
+      var base, base1, base2, base3, base4, color, fonts, image, j, len, ref;
       if (opts == null) {
         opts = {};
       }
@@ -300,18 +304,24 @@
       if (opts.colors == null) {
         opts.colors = this.colorScheme;
       }
+      if ((base = opts.colors).normal == null) {
+        base.normal = {};
+      }
+      if ((base1 = opts.colors).bold == null) {
+        base1.bold = {};
+      }
       ref = ["default", "black", "red", "green", "yellow", "blue", "magenta", "cyan", "white"];
       for (j = 0, len = ref.length; j < len; j++) {
         color = ref[j];
-        if ((base = opts.colors.normal)[color] == null) {
-          base[color] = this.colorScheme.normal[color];
+        if ((base2 = opts.colors.normal)[color] == null) {
+          base2[color] = this.colorScheme.normal[color];
         }
-        if ((base1 = opts.colors.bold)[color] == null) {
-          base1[color] = this.colorScheme.bold[color];
+        if ((base3 = opts.colors.bold)[color] == null) {
+          base3[color] = this.colorScheme.bold[color];
         }
       }
-      if ((base2 = opts.colors).background == null) {
-        base2.background = this.colorScheme.background;
+      if ((base4 = opts.colors).background == null) {
+        base4.background = this.colorScheme.background;
       }
       fonts = null;
       image = null;

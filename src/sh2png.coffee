@@ -5,6 +5,7 @@ class sh2png
   
   ###
   @property {Object} the default color scheme for coloring messages.
+  Default colors from https://github.com/Mayccoll/Gogh/blob/master/themes/one.dark.sh
   ###
   @colorScheme =
     normal:
@@ -112,7 +113,9 @@ class sh2png
         line = line + 1
         str = str.substr br + 1
         continue
-      all.push @drawString str.substr(0, escape), color, line, char
+      if escape > 0
+        all.push @drawString str.substr(0, escape), color, line, char
+        char++
       char += escape
       [sequence, code1, code2] = str.match colorCode
       color = @parseColor color, code1, code2, opts
@@ -204,8 +207,9 @@ class sh2png
   @format: (str, opts={}) ->
     opts.fonts ?= "#{__dirname}/../font/Ubuntu_Mono_16pt.fnt"
     opts.width ?= Math.max str.split("\n").map((l) -> l.length)...
-    # Default colors from https://github.com/Mayccoll/Gogh/blob/master/themes/one.dark.sh
     opts.colors ?= @colorScheme
+    opts.colors.normal ?= {}
+    opts.colors.bold ?= {}
     for color in ["default", "black", "red", "green", "yellow", "blue", "magenta", "cyan", "white"]
       opts.colors.normal[color] ?= @colorScheme.normal[color]
       opts.colors.bold[color] ?= @colorScheme.bold[color]
