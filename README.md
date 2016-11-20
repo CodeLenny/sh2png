@@ -83,6 +83,8 @@ You can pipe text to `sh2png` on the command line.  See `sh2png --help` for more
 
 ![`sh2png --help`](test/sample/console-format-stdout.png)
 
+(Created via `sh2png --help | sh2png - > help.png`)
+
 Install the CLI utility globally across your entire computer via `npm install -g sh2png`, or access a locally installed
 binary via `$(npm bin)/sh2png`.
 
