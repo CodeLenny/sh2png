@@ -34,6 +34,6 @@ In addition, each image must be listed in this README, describing what test crea
 - `console-format-stdout-alias.png`
   is created by [test-pipe-format][../test-pipe-format.coffee].
   It tests that `sh2png -` (an alias of `sh2png piped`) styles text.
-- `console-format-stdout-format.jpg`
+- `console-format-stdout-format.{format=png,jpg,bmp}`
   is created by [test-pipe-format][../test-pipe-format.coffee].
-  It tests that `sh2png --format jpg -` outputs a `jpg` file.
+  It tests that `sh2png --format {format} -` outputs a file of the correct type.

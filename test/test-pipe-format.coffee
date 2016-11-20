@@ -23,10 +23,11 @@ describe "sh2png piped", ->
 
     shouldMatch "console-format-stdout-alias.png"
 
-  describe "'--format jpg'", ->
+  for format in ["png", "jpg", "bmp"]
+      do (format) ->
+        describe "'--format #{format}'", ->
+          it "should run", ->
+            @timeout 10 * 1000
+            exec "echo 'Testing' | #{sh2png} --format #{format} - > #{__dirname}/output/console-format-stdout-format.#{format}"
 
-    it "should run", ->
-      @timeout 10 * 1000
-      exec "echo 'Testing' | #{sh2png} --format jpg - > #{__dirname}/output/console-format-stdout-format.jpg"
-
-    shouldMatch "console-format-stdout-format.jpg"
+          shouldMatch "console-format-stdout-format.#{format}"
