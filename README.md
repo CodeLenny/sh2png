@@ -77,6 +77,15 @@ exec "mocha", {env}
 
 See documentation for [sh2png.format] for more information.
 
+## Console Usage
+
+You can pipe text to `sh2png` on the command line.  See `sh2png --help` for more information.
+
+![`sh2png --help`](test/sample/console-format-stdout.png)
+
+Install the CLI utility globally across your entire computer via `npm install -g sh2png`, or access a locally installed
+binary via `$(npm bin)/sh2png`.
+
 ## Extending sh2png
 
 If you want to extend sh2png, you're in luck.  The source is object oriented, with documentation for each method.
