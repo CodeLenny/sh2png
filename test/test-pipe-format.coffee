@@ -31,3 +31,10 @@ describe "sh2png piped", ->
             exec "echo 'Testing' | #{sh2png} --format #{format} - > #{__dirname}/output/console-format-stdout-format.#{format}"
 
           shouldMatch "console-format-stdout-format.#{format}"
+
+        describe "'--output output.#{format}'", ->
+          it "should run", ->
+            @timeout 10 * 1000
+            exec "echo 'Testing' | #{sh2png} -o #{__dirname}/output/console-format-output.#{format} -"
+
+          shouldMatch "console-format-output.#{format}"

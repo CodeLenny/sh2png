@@ -37,3 +37,6 @@ In addition, each image must be listed in this README, describing what test crea
 - `console-format-stdout-format.{format=png,jpg,bmp}`
   is created by [test-pipe-format][../test-pipe-format.coffee].
   It tests that `sh2png --format {format} -` outputs a file of the correct type.
+- `console-format-output.{format=png,jpg,bmp}`
+  is created by [test-pipe-format][../test-pipe-format.coffee].
+  It tests that `sh2png --output output.{format} -` outputs a file of the correct type.
