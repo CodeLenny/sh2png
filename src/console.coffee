@@ -28,11 +28,19 @@ parseRGBA = (val) ->
           colors[i] = "FF"
         colors[i] = parseInt colors[i], 16
         unless 0 <= colors[i] <= 255
-          throw "RGBA component #{v} must be between 0 and 255, given #{colors[i]} in color #{val}"
+          throw new RangeError "RGBA component #{v} must be between 0 and 255, given #{colors[i]} in color #{val}"
       [r,g,b,a] = colors
       return (1 << 34) + (r << 24) + (g << 16) + (b << 8) + a
     else
-      throw "Misformatted color #{val}.  Try providing in the format 0xRRGGBBAA or RR,GG,BB[,AA]."
+      throw new RangeError "Misformatted color #{val}.  Try providing in the format 0xRRGGBBAA or RR,GG,BB[,AA]."
+
+# Ensure that input is one of the provided values
+oneOf = (option, options...) ->
+  (input) ->
+    return input if input in options
+    if input and input.length > 1
+      throw new RangeError "Invalid option '#{input}' for #{option}.  Must be one of #{options.join ", "}"
+    throw new RangeError "Missing input for option '#{option}'.  Must be one of #{options.join ", "}"
 
 # Given the name of a color, output the name in it's own color.
 doColor = (color, bold=yes) ->
@@ -47,24 +55,25 @@ doColor = (color, bold=yes) ->
 Convert raw options into supported options by sh2png, including converting colors from flat options into an object.
 ###
 parseOpts = (options) ->
+  output = {}
+  internal = ["commands", "options", "Command", "Option", "executables", "rawArgs", "args", "domain"]
   for opt, val of options
     switch
       when opt is "background"
-        options.colors ?= {}
-        options.colors.background = val
-        delete options.background
+        output.colors ?= {}
+        output.colors.background = val
       when opt.indexOf("bold") is 0
         name = opt.replace("bold", "").toLowerCase()
-        options.colors ?= {}
-        options.colors.bold ?= {}
-        options.colors.bold[name] = val
-        delete options[opt]
+        output.colors ?= {}
+        output.colors.bold ?= {}
+        output.colors.bold[name] = val
       when opt in colorNames
-        options.colors ?= {}
-        options.colors.normal ?= {}
-        options.colors.normal[opt] = val
-        delete options[opt]
-  options
+        output.colors ?= {}
+        output.colors.normal ?= {}
+        output.colors.normal[opt] = val
+      when opt not in internal and opt.indexOf("_") isnt 0 and typeof val isnt "function"
+        output[opt] = val
+  output
 
 ###
 @return {Promise<String>} all stdin input as a utf8 string.
@@ -88,7 +97,8 @@ program.option "--font <path>",
   
 # All commands take arguments only valid on the console.
 program.option "-f, --format <format>",
-  "File format to output.  Valid options: png, jpeg, bmp.  Defaults to extension of filename if given, otherwise 'png'"
+  "File format to output.  Valid options: png, jpeg, bmp.  Defaults to extension of filename if given, otherwise 'png'",
+  oneOf("format", "png", "jpg", "bmp"), "png"
 program.option "-o, --output <file>", "Path to store the output file.  If not given, outputs to stdout."
 program.option "--base64",
   "Output a base64 encoded image, instead of a binary file.  Explicit output format is required."
@@ -107,11 +117,16 @@ program.option "--background",
   parseRGBA, background
 
 program
-  .command "format", "Format text piped into the command"
-  .action (options) ->
-    options = {} unless options and options isnt "-"
-    options = parseOpts options
-    getStdin()
+  .command "piped"
+  .alias "-"
+  .description "Format text piped into the command"
+  .action (opts) ->
+    options = parseOpts program
+    # Replace `promise` with any prerequisite actions to be run before formatting
+    promise = Promise.resolve()
+    promise
+      .then ->
+        getStdin()
       .then (stdin) ->
         sh2png.format stdin, options
       .then (image) ->
@@ -134,5 +149,7 @@ program
       .then ->
         if options.output
           console.log "Wrote #{options.output}."
+      .catch (err) ->
+        console.error err
 
 program.parse process.argv
