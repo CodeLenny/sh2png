@@ -48,3 +48,11 @@ In addition, each image must be listed in this README, describing what test crea
   are created by [test-pipe-format][../test-pipe-format.coffee].
   It runs `sh2png --format {format} --base64 -`, and pipes into `.{format}-64`.
   Then the base64 encoded file is decoded into `.{format}`.
+- `console-format-red-rgba.png`
+  is created by [test-pipe-format][../test-pipe-format.coffee].
+  It changes the color defined for red text as green (`--red 0,FF,0`), and makes sure that the outputted image has the
+  correct color.
+- `console-format-red-hex.png`
+  is created by [test-pipe-format][../test-pipe-format.coffee].
+  It changes the color defined for red text as green (`--red 0x00FF00FF`), and makes sure that the outputted image has
+  the correct color.

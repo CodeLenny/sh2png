@@ -84,3 +84,17 @@ describe "sh2png piped", ->
                 fs.writeFileAsync "#{__dirname}/output/#{file64decoded}", img
 
           shouldMatch file64decoded
+
+  describe "'--red 0,FF,0'", ->
+    it "should run", ->
+      @timeout 10 * 1000
+      exec "echo '\x1b[31mTesting\x1b[0m' | #{sh2png} --red 0,FF,0 -o #{__dirname}/output/console-format-red-rgba.png -"
+
+    shouldMatch "console-format-red-rgba.png"
+
+  describe "'--red 0x00FF00FF'", ->
+    it "should run", ->
+      @timeout 10 * 1000
+      exec "echo '\x1b[31mTesting\x1b[0m' | #{sh2png} --red 0x00FF00FF -o #{__dirname}/output/console-format-red-hex.png -"
+
+    shouldMatch "console-format-red-hex.png"
