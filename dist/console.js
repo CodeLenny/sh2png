@@ -190,18 +190,16 @@
     }).then(function(stdin) {
       return sh2png.format(stdin, options);
     }).then(function(image) {
-      var base64, mime;
+      var mime;
       if (options.base64) {
-        if (options.format && options.format === "jpg") {
-          options.format = "jpeg";
-        }
         mime = options.format ? "image/" + options.format : "image/png";
-        base64 = image.getBase64(mime);
-        if (options.output) {
-          return fs.writeFileAsync(options.output, base64);
-        } else {
-          return console.log(base64);
-        }
+        return image.getBase64Async(mime).then(function(base64) {
+          if (options.output) {
+            return fs.writeFileAsync(options.output, base64);
+          } else {
+            return console.log(base64);
+          }
+        });
       } else {
         if (options.output) {
           return image.write(options.output);

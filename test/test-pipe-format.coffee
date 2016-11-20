@@ -1,5 +1,8 @@
 chai = require "chai"
 should = chai.should()
+
+Promise = require "bluebird"
+fs = Promise.promisifyAll require "fs"
 {exec} = require "child-process-promise"
 shouldMatch = require "./match"
 
@@ -31,6 +34,25 @@ describe "sh2png piped", ->
             exec "echo 'Testing' | #{sh2png} --format #{format} - > #{__dirname}/output/console-format-stdout-format.#{format}"
 
           shouldMatch "console-format-stdout-format.#{format}"
+
+        describe "'--format #{format} --base64'", ->
+          file64 = "console-format-base64.#{format}-64"
+          file64decoded = "console-format-base64.#{format}"
+          it "should run", ->
+            @timeout 10 * 1000
+            exec "echo 'Testing' | #{sh2png} --format #{format} --base64 - > #{__dirname}/output/#{file64}"
+
+          shouldMatch file64
+
+          it "should convert to #{format}", ->
+            fs
+              .readFileAsync "#{__dirname}/output/#{file64}", "utf8"
+              .then (raw) ->
+                base64 = raw.replace(/data:image\/(?:jpeg|png|bmp);base64,/, "")
+                img = new Buffer(base64, 'base64')
+                fs.writeFileAsync "#{__dirname}/output/#{file64decoded}", img
+
+          shouldMatch file64decoded
 
         describe "'--output output.#{format}'", ->
           it "should run", ->

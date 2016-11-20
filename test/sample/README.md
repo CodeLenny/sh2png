@@ -40,3 +40,7 @@ In addition, each image must be listed in this README, describing what test crea
 - `console-format-output.{format=png,jpg,bmp}`
   is created by [test-pipe-format][../test-pipe-format.coffee].
   It tests that `sh2png --output output.{format} -` outputs a file of the correct type.
+- `console-format-base64.{format=png,jpg,bmp}[-64]`
+  are created by [test-pipe-format][../test-pipe-format.coffee].
+  It runs `sh2png --format {format} --base64 -`, and pipes into `.{format}-64`.
+  Then the base64 encoded file is decoded into `.{format}`.

@@ -133,11 +133,13 @@ program
         if options.base64
           options.format = "jpeg" if options.format and options.format is "jpg"
           mime = if options.format then "image/#{options.format}" else "image/png"
-          base64 = image.getBase64 mime
-          if options.output
-            return fs.writeFileAsync options.output, base64
-          else
-            return console.log base64
+          return image
+            .getBase64Async mime
+            .then (base64) ->
+              if options.output
+                return fs.writeFileAsync options.output, base64
+              else
+                return console.log base64
         else
           if options.output
             return image.write options.output
