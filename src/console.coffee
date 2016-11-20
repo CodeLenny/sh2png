@@ -94,7 +94,7 @@ program.option "-w, --width <n>", "The console width.  Defaults to terminal widt
 program.option "--font <path>",
   "A path to a BMFont file to use.  Can be used more than once.  Defaults to Ubuntu Mono, 16pt.",
   collect, null
-  
+
 # All commands take arguments only valid on the console.
 program.option "-f, --format <format>",
   "File format to output.  Valid options: png, jpeg, bmp.  Defaults to extension of filename if given, otherwise 'png'",
@@ -131,6 +131,7 @@ program
         sh2png.format stdin, options
       .then (image) ->
         if options.base64
+          options.format = "jpeg" if options.format and options.format is "jpg"
           mime = if options.format then "image/#{options.format}" else "image/png"
           base64 = image.getBase64 mime
           if options.output
@@ -141,15 +142,18 @@ program
           if options.output
             return image.write options.output
           else
+            options.format = "jpeg" if options.format and options.format is "jpg"
             mime = if options.format then "image/#{options.format}" else "image/png"
             new Promise (resolve, reject) ->
               image.getBuffer mime, (err, buffer) ->
+                return reject err if err
                 process.stdout.write buffer
                 resolve()
       .then ->
         if options.output
           console.log "Wrote #{options.output}."
       .catch (err) ->
+        console.error "Error while formatting input."
         console.error err
 
 program.parse process.argv

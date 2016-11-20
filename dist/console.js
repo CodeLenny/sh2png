@@ -192,6 +192,9 @@
     }).then(function(image) {
       var base64, mime;
       if (options.base64) {
+        if (options.format && options.format === "jpg") {
+          options.format = "jpeg";
+        }
         mime = options.format ? "image/" + options.format : "image/png";
         base64 = image.getBase64(mime);
         if (options.output) {
@@ -203,9 +206,15 @@
         if (options.output) {
           return image.write(options.output);
         } else {
+          if (options.format && options.format === "jpg") {
+            options.format = "jpeg";
+          }
           mime = options.format ? "image/" + options.format : "image/png";
           return new Promise(function(resolve, reject) {
             return image.getBuffer(mime, function(err, buffer) {
+              if (err) {
+                return reject(err);
+              }
               process.stdout.write(buffer);
               return resolve();
             });
@@ -217,6 +226,7 @@
         return console.log("Wrote " + options.output + ".");
       }
     })["catch"](function(err) {
+      console.error("Error while formatting input.");
       return console.error(err);
     });
   });
