@@ -44,3 +44,7 @@ In addition, each image must be listed in this README, describing what test crea
   are created by [test-pipe-format][../test-pipe-format.coffee].
   It runs `sh2png --format {format} --base64 -`, and pipes into `.{format}-64`.
   Then the base64 encoded file is decoded into `.{format}`.
+- `console-format-output-base64.{format=png,jpg,bmp}[-64]`
+  are created by [test-pipe-format][../test-pipe-format.coffee].
+  It runs `sh2png --format {format} --base64 -`, and pipes into `.{format}-64`.
+  Then the base64 encoded file is decoded into `.{format}`.
