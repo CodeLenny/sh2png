@@ -27,6 +27,17 @@ Don't have NPM?  Grab [NodeJS](https://nodejs.org/en/download/) or [Node Version
 npm install [--save-dev] sh2png
 ```
 
+## Console Usage
+
+You can pipe text to `sh2png` on the command line.  See `sh2png --help` for more information.
+
+![`sh2png --help`](test/sample/console-format-stdout.png)
+
+(Created via `sh2png --help | sh2png - > help.png`)
+
+Install the CLI utility globally across your entire computer via `npm install -g sh2png`, or access a locally installed
+binary via `$(npm bin)/sh2png`.
+
 ## Node.js Usage
 
 ### Formatting Strings
@@ -76,17 +87,6 @@ exec "mocha", {env}
 ```
 
 See documentation for [sh2png.format] for more information.
-
-## Console Usage
-
-You can pipe text to `sh2png` on the command line.  See `sh2png --help` for more information.
-
-![`sh2png --help`](test/sample/console-format-stdout.png)
-
-(Created via `sh2png --help | sh2png - > help.png`)
-
-Install the CLI utility globally across your entire computer via `npm install -g sh2png`, or access a locally installed
-binary via `$(npm bin)/sh2png`.
 
 ## Extending sh2png
 
