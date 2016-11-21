@@ -2,6 +2,44 @@ Promise = require "bluebird"
 Jimp = require "@codelenny/jimp"
 
 class sh2png
+  
+  ###
+  @property {Object} the default color scheme for coloring messages.
+  Default colors from https://github.com/Mayccoll/Gogh/blob/master/themes/one.dark.sh
+  ###
+  @colorScheme =
+    normal:
+      default: 0x5C6370FF
+      black: 0x000000FF
+      red: 0xE06C75FF
+      green: 0x98C379FF
+      yellow: 0xD19A66FF
+      blue: 0x61AFEFFF
+      magenta: 0xC678DDFF
+      cyan: 0x56B6C2FF
+      white: 0xABB2BFFF
+    bold:
+      default: 0x5C6370FF
+      black: 0x5C6370FF
+      red: 0xE06C75FF
+      green: 0x98C379FF
+      yellow: 0xD19A66FF
+      blue: 0x61AFEFFF
+      magenta: 0xC678DDFF
+      cyan: 0x56B6C2FF
+      white: 0xFFFEFEFF
+    background: 0x1E2127FF
+  
+  @colorCodes =
+    "39": "default"
+    "30": "black"
+    "31": "red"
+    "32": "green"
+    "33": "yellow"
+    "34": "blue"
+    "35": "magenta"
+    "36": "cyan"
+    "37": "white"
 
   ###
   Returns the required height and width of the image.
@@ -75,7 +113,8 @@ class sh2png
         line = line + 1
         str = str.substr br + 1
         continue
-      all.push @drawString str.substr(0, escape), color, line, char
+      if escape > 0
+        all.push @drawString str.substr(0, escape), color, line, char
       char += escape
       [sequence, code1, code2] = str.match colorCode
       color = @parseColor color, code1, code2, opts
@@ -97,10 +136,11 @@ class sh2png
       font = fonts
       font = fonts[0] if Array.isArray fonts
       unless font.common.charWidth
-        if font.chars.m?.width
-          font.common.charWidth = font.chars.m.width
-        else if font.chars[firstChar = Object.keys(font.chars)[0]]?.width
-          font.common.charWidth = font.chars[firstChar].width
+        if font.chars.m?.xadvance
+          font.common.charWidth = font.chars.m.xadvance
+          # from jimp: font.chars.m.xoffset + (font.chars.m.xadvance ? 0)
+        else if font.chars[firstChar = Object.keys(font.chars)[0]]?.xadvance
+          font.common.charWidth = font.chars[firstChar].xadvance
         else
           throw new Error("Couldn't find any characters in the font given")
       c = opts.colors[if color.bold then "bold" else "normal"][color.color]
@@ -116,16 +156,6 @@ class sh2png
   @private
   ###
   @parseColor = (color={}, code1, code2, opts) ->
-    color_only =
-      "39": "default"
-      "30": "black"
-      "31": "red"
-      "32": "green"
-      "33": "yellow"
-      "34": "blue"
-      "35": "magenta"
-      "36": "cyan"
-      "37": "white"
     for code in [code1, code2] when code
       switch
         when code is '0'
@@ -134,8 +164,8 @@ class sh2png
           color = {color: color.color ? "default", bold: yes}
         when code is '21'
           color = {color: color.color ? "default", bold: no}
-        when color_only[code]
-          color = {color: color_only[code], bold: color.bold ? no}
+        when @colorCodes[code]
+          color = {color: @colorCodes[code], bold: color.bold ? no}
     color
 
   ###
@@ -165,6 +195,10 @@ class sh2png
   @option opts {Number} width the console width to wrap characters at.  Defaults to the longest line in the string.
   @option opts {String, Array<String>} font a path (or array of paths) to a BMF font to use when drawing the image.
     Defaults to Ubuntu Mono 10pt, included in `sh2png`.
+  @option opts {Object} colors a color scheme to apply when formatting messages.  Colors must be native JavaScript rgba
+    hex values including transparency, such as `0x0x5C6370FF`.  Structure: `{normal: {}, bold: {}, background}`, with
+    colors `default`, `black`, `red`, `green`, `yellow`, `blue`, `magenta`, `cyan`, `white` under `normal` and `bold`.
+    Defaults to using a theme based on [Atom One Dark](https://github.com/Mayccoll/Gogh/blob/master/themes/one.dark.sh).
   @return {Promise<Image>} a [JIMP](https://github.com/oliver-moran/jimp) image, which supports
     [`image.write(path, cb)`](https://github.com/oliver-moran/jimp#writing-to-files),
     [`image.getBase64(mime, cb)`](https://github.com/oliver-moran/jimp#data-uri), etc.
@@ -173,27 +207,13 @@ class sh2png
   @format: (str, opts={}) ->
     opts.fonts ?= "#{__dirname}/../font/Ubuntu_Mono_16pt.fnt"
     opts.width ?= Math.max str.split("\n").map((l) -> l.length)...
-    # Default colors from https://github.com/Mayccoll/Gogh/blob/master/themes/one.dark.sh
-    opts.colors ?= {normal: {}, bold: {}}
-    opts.colors.normal.default ?= 0x5C6370FF
-    opts.colors.normal.black ?= 0x000000FF
-    opts.colors.normal.red ?= 0xE06C75FF
-    opts.colors.normal.green ?= 0x98C379FF
-    opts.colors.normal.yellow ?= 0xD19A66FF
-    opts.colors.normal.blue ?= 0x61AFEFFF
-    opts.colors.normal.magenta ?= 0xC678DDFF
-    opts.colors.normal.cyan ?= 0x56B6C2FF
-    opts.colors.normal.white ?= 0xABB2BFFF
-    opts.colors.bold.default ?= 0x5C6370FF
-    opts.colors.bold.black ?= 0x5C6370FF
-    opts.colors.bold.red ?= 0xE06C75FF
-    opts.colors.bold.green ?= 0x98C379FF
-    opts.colors.bold.yellow ?= 0xD19A66FF
-    opts.colors.bold.blue ?= 0x61AFEFFF
-    opts.colors.bold.magenta ?= 0xC678DDFF
-    opts.colors.bold.cyan ?= 0x56B6C2FF
-    opts.colors.bold.white ?= 0xFFFEFEFF
-    opts.colors.background ?= 0x1E2127FF
+    opts.colors ?= @colorScheme
+    opts.colors.normal ?= {}
+    opts.colors.bold ?= {}
+    for color in ["default", "black", "red", "green", "yellow", "blue", "magenta", "cyan", "white"]
+      opts.colors.normal[color] ?= @colorScheme.normal[color]
+      opts.colors.bold[color] ?= @colorScheme.bold[color]
+    opts.colors.background ?= @colorScheme.background
     fonts = null
     image = null
     if Array.isArray opts.fonts

@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Screenshot console output.",
   "main": "dist/sh2png.js",
+  "bin": {
+    "sh2png": "./dist/console.js"
+  },
   "scripts": {
     "test": "mocha --compilers coffee:coffee-script/register"
   },
