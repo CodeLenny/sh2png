@@ -192,6 +192,9 @@
     }).then(function(image) {
       var mime;
       if (options.base64) {
+        if (options.format && options.format === "jpg") {
+          options.format = "jpeg";
+        }
         mime = options.format ? "image/" + options.format : "image/png";
         return image.getBase64Async(mime).then(function(base64) {
           if (options.output) {

@@ -15,6 +15,8 @@ Breaking changes are marked inline.
 
 ## Unreleased
 
+## [1.1.0] - 2016-11-20
+
 ## Added
 - `.editorconfig` to enforce basic lint rules
 - CLI access via `sh2png` executable

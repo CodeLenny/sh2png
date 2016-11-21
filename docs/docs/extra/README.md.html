@@ -36,9 +36,19 @@
       <div id='filecontents'>
         <h1 id="shell-to-png">Shell to PNG</h1><p>Tools exist to screenshot websites, but why aren&#39;t there tools to screenshot console contents?</p><p>Add sample usage to your README as part of your build system, keep a tutorial&#39;s command line examples updated, or easily create a bug report without as much copy/paste.</p><p>And yes, the tool is compatible with all shells and many image formats, despite it&#39;s misleading name.</p><p><a href="https://www.npmjs.com/package/sh2png"><img src="https://img.shields.io/npm/v/sh2png.svg" alt="npm"></a>
 <a href="https://travis-ci.org/CodeLenny/sh2png"><img src="https://travis-ci.org/CodeLenny/sh2png.svg?branch=master" alt="Build Status"></a></p><h2 id="sample-output">Sample Output</h2><p><img src="test/sample/format-mocha.png" alt="Mocha&#39;s output"></p><p>This image was created by passing the result of calling <a href="https://mochajs.org/">Mocha</a> into <code>sh2png.format</code>.</p><p>See <a href="test/test-format-mocha-output.coffee">test-format-mocha-output.coffee</a> for the test that produced the output above.
-See the <a href="test/sample/">results</a> of testing sh2png for other examples.</p><h2 id="installation">Installation</h2><p>Install via <a href="https://www.npmjs.com/">NPM</a>.</p><p>Don&#39;t have NPM?  Grab <a href="https://nodejs.org/en/download/">NodeJS</a> or <a href="https://github.com/creationix/nvm">Node Version Manager</a>.</p><pre><code class="lang-sh">npm install [--save-dev] sh2png
+See the <a href="test/sample/">results</a> of testing sh2png for other examples.</p><h2 id="versioning">Versioning</h2><p>As per usual for Node applications, sh2png follows <a href="http://semver.org/">Semantic Versioning</a>.
+See the <a href="./CHANGELOG.md.html">CHANGELOG</a> for information about each release.</p><p>For stability, minor versions are used if either</p><ul>
+<li>internal (private) methods are altered to have a different API</li>
+<li>bugs are fixed that people <a href="https://github.com/expressjs/express/issues/1794">might rely on</a></li>
+</ul><p>What does this mean?  Lock down your minor number for sh2png in <code>package.json</code> if you:</p><ul>
+<li>Use images outputted sh2png in testing, where us fixing a pixel will break your test</li>
+<li>Extend the sh2png class, and depend on the internal method signatures</li>
+<li>Are building a core utility, which might have users in one of the above categories.</li>
+</ul><p>Otherwise, upgrading to the latest minor version or patch should be safe, as the public API should remain the same.</p><p>Either way, consider subscribing to an <a href="https://github.com/CodeLenny/sh2png/releases.atom">ATOM feed</a> of our releases,
+so you can be notified about new versions.</p><h2 id="installation">Installation</h2><p>Install via <a href="https://www.npmjs.com/">NPM</a>.</p><p>Don&#39;t have NPM?  Grab <a href="https://nodejs.org/en/download/">NodeJS</a> or <a href="https://github.com/creationix/nvm">Node Version Manager</a>.</p><pre><code class="lang-sh">npm install [--save-dev] sh2png
 </code></pre>
-<h2 id="node-js-usage">Node.js Usage</h2>
+<h2 id="console-usage">Console Usage</h2><p>You can pipe text to <code>sh2png</code> on the command line.  See <code>sh2png --help</code> for more information.</p><p><img src="test/sample/console-format-stdout.png" alt="`sh2png --help`"></p><p>(Created via <code>sh2png --help | sh2png - &gt; help.png</code>)</p><p>Install the CLI utility globally across your entire computer via <code>npm install -g sh2png</code>, or access a locally installed
+binary via <code>$(npm bin)/sh2png</code>.</p><h2 id="node-js-usage">Node.js Usage</h2>
 <h3 id="formatting-strings">Formatting Strings</h3><p>Got some text from the console?  Call <code>sh2png.format</code> to turn a string of console text into an image.  <code>format</code> returns a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>.</p><p>Don&#39;t want to use Promises?  Here&#39;s some standard NodeJS code.</p><pre><code class="lang-js">sh2png = require(&quot;sh2png&quot;);
 exec = require(&quot;child_process&quot;).exec;
 env = process.env;
