@@ -4,5 +4,6 @@
 --output ./docs/docs
 ./src
 -
+CHANGELOG.md
 README.md
 LICENSE

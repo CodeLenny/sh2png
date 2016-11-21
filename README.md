@@ -17,6 +17,25 @@ This image was created by passing the result of calling [Mocha](https://mochajs.
 See [test-format-mocha-output.coffee](test/test-format-mocha-output.coffee) for the test that produced the output above.
 See the [results](test/sample/) of testing sh2png for other examples.
 
+## Versioning
+
+As per usual for Node applications, sh2png follows [Semantic Versioning](http://semver.org/).
+See the [CHANGELOG](./CHANGELOG.md) for information about each release.
+
+For stability, minor versions are used if either
+- internal (private) methods are altered to have a different API
+- bugs are fixed that people [might rely on](https://github.com/expressjs/express/issues/1794)
+
+What does this mean?  Lock down your minor number for sh2png in `package.json` if you:
+- Use images outputted sh2png in testing, where us fixing a pixel will break your test
+- Extend the sh2png class, and depend on the internal method signatures
+- Are building a core utility, which might have users in one of the above categories.
+
+Otherwise, upgrading to the latest minor version or patch should be safe, as the public API should remain the same.
+
+Either way, consider subscribing to an [ATOM feed](https://github.com/CodeLenny/sh2png/releases.atom) of our releases,
+so you can be notified about new versions.
+
 ## Installation
 
 Install via [NPM](https://www.npmjs.com/).
